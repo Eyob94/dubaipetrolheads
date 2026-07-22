@@ -31,12 +31,13 @@ export default async function Home({
     const sp = await searchParams;
 
     const success = sp?.success;
+    const pay = sp?.pay;
     const checkoutId = sp?.checkoutId;
     const payer = sp?.user;
 
     if (success && checkoutId) {
         return <SuccessModal />;
-    } else if (success) {
+    } else if (pay) {
         return <SuccessModal check />;
     }
 
@@ -101,12 +102,12 @@ export default async function Home({
                     <Button variant={"outline"}>Today</Button>
                 </Link>
                 <Link
-                    href={`?${payer ? `user=${payer}` : "success=true"}&dateRange=past7days`}
+                    href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past7days`}
                 >
                     <Button variant={"outline"}>Past 7 days</Button>
                 </Link>
                 <Link
-                    href={`?${payer ? `user=${payer}` : "success=true"}&dateRange=past30days`}
+                    href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past30days`}
                 >
                     <Button variant={"outline"}>Past 30 days</Button>
                 </Link>
