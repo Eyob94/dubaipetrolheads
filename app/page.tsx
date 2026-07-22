@@ -49,9 +49,9 @@ export default async function Home({
         result = await pool.query(
             "select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '7 days') and region is not null order by price asc ",
         );
-    } else if (dateRange == "past30days") {
+    } else if (dateRange == "past14days") {
         result = await pool.query(
-            "select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '30 days') and region is not null order by price asc ",
+            "select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '14 days') and region is not null order by price asc ",
         );
     } else {
         result = await pool.query(
@@ -107,9 +107,9 @@ export default async function Home({
                     <Button variant={"outline"}>Past 7 days</Button>
                 </Link>
                 <Link
-                    href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past30days`}
+                    href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past14days`}
                 >
-                    <Button variant={"outline"}>Past 30 days</Button>
+                    <Button variant={"outline"}>Past 14 days</Button>
                 </Link>
             </div>
             <div className="md:grid-cols-2 xl:grid-cols-3 grid-cols-1 w-full gap-4 grid">
