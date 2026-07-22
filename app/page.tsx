@@ -32,7 +32,7 @@ export default async function Home({
 
     const success = sp?.success;
     const pay = sp?.pay;
-    const checkoutId = sp?.checkoutId;
+    const checkoutId = sp?.customer_session_token;
     const payer = sp?.user;
 
     if (success && checkoutId) {
