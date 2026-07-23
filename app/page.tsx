@@ -93,7 +93,7 @@ export default async function Home({
     [Infinity, -Infinity],
   );
 
-  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * 2);
+  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * 3);
 
   const yearRange = rows.reduce(
     (acc, row) => {
