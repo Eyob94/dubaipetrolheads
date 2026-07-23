@@ -61,7 +61,7 @@ export default async function Home({
     );
   } else {
     result = await pool.query(
-      `select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '2 days') and region is not null  order by price asc `,
+      `select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '1 days') and region is not null  order by price asc `,
     );
   }
 
@@ -76,7 +76,6 @@ export default async function Home({
 
   const rows = result.rows;
 
-  console.log("YYYY", year);
 
   const priceRange = rows.reduce(
     (acc, row) => {
@@ -93,7 +92,7 @@ export default async function Home({
     [Infinity, -Infinity],
   );
 
-  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * 3);
+  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * 2);
 
   const yearRange = rows.reduce(
     (acc, row) => {
@@ -210,7 +209,7 @@ export default async function Home({
             else return r;
           })
           .map((r) => {
-            const paidContent = new Date(r.time) > cutoff;
+            const paidContent = new Date(r.time).getTime() < cutoff.getTime();
             return (
               <Card
                 key={r.id}
