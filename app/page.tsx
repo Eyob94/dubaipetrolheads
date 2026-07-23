@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { SuccessModal } from "./success-modal";
 import { Separator } from "@/components/ui/separator";
 import { FilterBlock } from "./filter";
 import clsx from "clsx";
@@ -32,17 +31,6 @@ export default async function Home({
   }>;
 }) {
   const sp = await searchParams;
-
-  const success = sp?.success;
-  const pay = sp?.pay;
-  const checkoutId = sp?.customer_session_token;
-  const payer = sp?.user;
-
-  if (success && checkoutId) {
-    return <SuccessModal />;
-  } else if (pay) {
-    return <SuccessModal check />;
-  }
 
   const dateRange = sp?.dateRange;
   const year = sp?.year;
@@ -76,7 +64,6 @@ export default async function Home({
 
   const rows = result.rows;
 
-
   const priceRange = rows.reduce(
     (acc, row) => {
       if (row.price > acc[1]) {
@@ -91,8 +78,6 @@ export default async function Home({
 
     [Infinity, -Infinity],
   );
-
-  const cutoff = new Date(Date.now() - 1000 * 60 * 60 * 24 * 2);
 
   const yearRange = rows.reduce(
     (acc, row) => {
@@ -120,7 +105,6 @@ export default async function Home({
       <h1 className="text-4xl">Hello Petrol Heads</h1>
       <div className="w-full">
         <form action="/" method="GET">
-          {payer && <input type="hidden" name="user" value={payer} />}
           <InputGroup className=" w-full">
             <InputGroupInput
               defaultValue={search}
@@ -139,38 +123,13 @@ export default async function Home({
         </form>
       </div>
       <div className="flex gap-4 justify-between">
-        <Link
-          href={`?${payer ? `user=${payer}&` : ""}dateRange=past2days`}
-          className="relative"
-        >
+        <Link href={`?dateRange=past2days`} className="relative">
           <Button variant={"outline"}>Past 2 days</Button>
         </Link>
-        <Link
-          href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past7days`}
-          className="relative"
-        >
-          {!payer && (
-            <Badge
-              variant="secondary"
-              className="absolute -right-1/3 -top-1/2 -translate-x-1/2 translate-y-1/2"
-            >
-              Paid
-            </Badge>
-          )}
+        <Link href={`?dateRange=past7days`} className="relative">
           <Button variant={"outline"}>Past 7 days</Button>
         </Link>
-        <Link
-          href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past14days`}
-          className="relative"
-        >
-          {!payer && (
-            <Badge
-              variant="secondary"
-              className="absolute -right-1/3 -top-1/2 -translate-x-1/2 translate-y-1/2"
-            >
-              Paid
-            </Badge>
-          )}
+        <Link href={`?dateRange=past14days`} className="relative">
           <Button variant={"outline"}>Past 14 days</Button>
         </Link>
       </div>
@@ -209,7 +168,6 @@ export default async function Home({
             else return r;
           })
           .map((r) => {
-            const paidContent = new Date(r.time).getTime() < cutoff.getTime();
             return (
               <Card
                 key={r.id}
@@ -223,10 +181,9 @@ export default async function Home({
                   height={400}
                   className={clsx(
                     "relative z-20 aspect-video w-full object-cover  grayscale dark:brightness-100",
-                    paidContent && !payer && "blur-10 blur",
                   )}
                 />
-                {paidContent && !payer ? (
+                {false ? (
                   <div className="w-full flex-col h-full gap-8 flex justify-center items-center">
                     <div className="items-center flex gap-4">
                       <LockIcon />
