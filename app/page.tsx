@@ -55,7 +55,7 @@ export default async function Home({
         );
     } else {
         result = await pool.query(
-            "select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE) and region is not null order by price asc ",
+            "select * from listing l join cars c on l.car_id = c.id where time > (CURRENT_DATE - INTERVAL '2 days') and region is not null order by price asc ",
         );
     }
 
@@ -98,8 +98,8 @@ export default async function Home({
                 </form>
             </div>
             <div className="flex gap-4 justify-between">
-                <Link href={`?${payer ? `user=${payer}&` : ""}dateRange=today`}>
-                    <Button variant={"outline"}>Today</Button>
+                <Link href={`?${payer ? `user=${payer}&` : ""}dateRange=past2days`}>
+                    <Button variant={"outline"}>Past 2 days</Button>
                 </Link>
                 <Link
                     href={`?${payer ? `user=${payer}` : "pay=true"}&dateRange=past7days`}
